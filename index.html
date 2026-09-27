@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#071426" />
+  <title>TEMBOT — Autonomous Coffee Stations</title>
+  <meta name="description" content="TEMBOT develops and operates autonomous robotic coffee stations for modern spaces." />
+  <style>
+    :root{
+      --navy:#071426;
+      --navy-2:#0b1d35;
+      --ink:#102033;
+      --muted:#687688;
+      --line:#dfe5eb;
+      --soft:#f4f7f9;
+      --white:#fff;
+      --accent:#73c7d8;
+      --accent-2:#b8edf4;
+      --radius:24px;
+      --max:1240px;
+      --shadow:0 22px 70px rgba(6,23,42,.12);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:var(--white);
+      line-height:1.5;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .container{width:min(var(--max),calc(100% - 48px));margin:auto}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:700;
+      color:var(--muted)
+    }
+    .eyebrow::before{content:"";width:28px;height:1px;background:currentColor}
+    .section{padding:120px 0}
+    .section-head{max-width:720px;margin-bottom:58px}
+    h1,h2,h3,p{margin-top:0}
+    h1{
+      font-size:clamp(54px,8vw,108px);line-height:.92;letter-spacing:-.065em;
+      font-weight:650;margin-bottom:30px;max-width:900px
+    }
+    h2{
+      font-size:clamp(40px,5vw,68px);line-height:.98;letter-spacing:-.055em;
+      font-weight:620;margin:18px 0 22px
+    }
+    h3{font-size:21px;letter-spacing:-.025em;margin-bottom:10px}
+    p{color:var(--muted);font-size:17px}
+    .nav{
+      position:fixed;z-index:50;top:0;left:0;right:0;
+      background:rgba(255,255,255,.88);backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(223,229,235,.7)
+    }
+    .nav-inner{height:78px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:23px;font-weight:800;letter-spacing:-.07em}
+    .nav-links{display:flex;align-items:center;gap:34px;font-size:14px;font-weight:600;color:#344255}
+    .nav-links a{transition:color .2s ease}
+    .nav-links a:hover{color:var(--navy)}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:12px;
+      min-height:50px;padding:0 21px;border:1px solid transparent;border-radius:999px;
+      font-size:13px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;
+      transition:transform .25s ease,background .25s ease,border-color .25s ease,box-shadow .25s ease;
+      cursor:pointer
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--navy);color:white;box-shadow:0 10px 24px rgba(7,20,38,.15)}
+    .btn-dark:hover{background:#0d2747}
+    .btn-light{background:white;color:var(--navy);border-color:#d7e0e8}
+    .btn-light:hover{border-color:#aebdca}
+    .menu{display:none;background:none;border:0;padding:8px;cursor:pointer}
+    .menu span{display:block;width:24px;height:1.5px;background:var(--navy);margin:5px 0}
+    .hero {
+      position: relative;
+      overflow: hidden;
+      height: 720px;                                
+      display: flex;
+      align-items: center;                          
+      background: url('images/main.png') center center / cover no-repeat;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 720px;
+      height: 720px;
+      right: -260px;
+      top: 0;                                        
+      border: 1px solid rgba(184,237,244,.14);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 430px;
+      height: 430px;
+      right: -90px;
+      top: 145px;                                    
+      border: 1px solid rgba(184,237,244,.10);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+    .hero-grid {
+      grid-template-columns: 1fr;
+      max-width: 640px;
+      margin-left: 50px;                            
+    }
+    .hero .eyebrow{color:#9eafc1}
+    .hero h1{max-width:790px}
+    .hero-copy{font-size:20px;line-height:1.5;color:#b7c4d2;background: rgba(13, 39, 71, .8);max-width:590px;margin-bottom:36px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .hero .btn-dark{background:var(--accent);color:#071426}
+    .hero .btn-dark:hover{background:#91dbe7}
+    .hero .btn-light{background: rgba(13, 39, 71);color:white;border-color:#39506a}
+    .hero .btn-light:hover{background:#39506a}
+    .station-wrap{min-height:570px;display:grid;place-items:center;position:relative}
+    .station{
+      width:min(460px,88%);aspect-ratio: .72;
+      background:linear-gradient(150deg,#edf4f7 0%,#bdcbd3 48%,#82939e 100%);
+      border-radius:42px 42px 28px 28px;position:relative;
+      box-shadow:0 45px 100px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.45);
+      transform:perspective(900px) rotateY(-8deg);
+    }
+    .station::before {
+      content: "";
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      top: 10%;
+      height: 47%;
+      border-radius: 25px;
+      background: url('images/main.png') center/cover no-repeat;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.09);
+    }
+    .station::after {
+      content: "";
+    }
+    .station-panel{position:absolute;left:20%;right:20%;bottom:15%;height:22%;background:#e8eef1;border-radius:18px;box-shadow:inset 0 1px 0 white}
+    .station-cup{position:absolute;width:72px;height:62px;left:calc(50% - 36px);bottom:22%;background:white;border-radius:5px 5px 18px 18px;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+    .station-cup::before{content:"";position:absolute;left:9px;right:9px;top:8px;height:5px;border-radius:10px;background:#6e4633}
+    .station-glow{position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(115,199,216,.14);filter:blur(10px);right:8%;top:17%}
+    .grid-2{display:grid;grid-template-columns:.85fr 1.15fr;gap:100px;align-items:start}
+    .about-copy{max-width:680px}
+    .about-copy p{font-size:20px;line-height:1.65}
+    .rule-list{border-top:1px solid var(--line)}
+    .rule-item{display:grid;grid-template-columns:150px 1fr;gap:30px;padding:28px 0;border-bottom:1px solid var(--line)}
+    .rule-item strong{font-size:14px;text-transform:uppercase;letter-spacing:.09em}
+    .rule-item p{margin:0;font-size:16px}
+    .soft-section{background:var(--soft)}
+    .cards{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+    .card{min-height:250px;padding:28px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.32);transition:background .25s ease,transform .25s ease}
+    .card:hover{background:white;transform:translateY(-4px)}
+    .num{font-size:12px;color:#8794a1;letter-spacing:.12em;margin-bottom:72px}
+    .card p{font-size:15px}
+    .advantages{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#203247;border:1px solid #203247}
+    .adv{background:var(--navy);color:white;padding:34px;min-height:260px}
+    .adv .num{color:#8193a7}.adv p{color:#aebdca;font-size:15px}
+    .process{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+    .step{padding:34px 36px 40px 0;border-bottom:1px solid var(--line);position:relative}
+    .step:not(:last-child){border-right:1px solid var(--line);padding-right:45px;margin-right:45px}
+    .step-number{font-size:12px;font-weight:800;letter-spacing:.14em;color:#8b98a6}
+    .step h3{font-size:27px;margin-top:45px}
+    .step p{font-size:15px;max-width:280px}
+    .locations{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .location{min-height:150px;border:1px solid var(--line);padding:24px;display:flex;align-items:flex-end;position:relative;overflow:hidden;background:#fff;transition:transform .25s ease,box-shadow .25s ease}
+    .location:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+    .location span{font-size:16px;font-weight:650;position:relative;z-index:1}
+    .location::after{content:"";position:absolute;width:80px;height:80px;border:1px solid #dce5ea;border-radius:50%;right:-20px;top:-20px}
+    .network{background:var(--navy);color:white;overflow:hidden;position:relative}
+    .network .container{position:relative;z-index:1}
+    .network p{color:#aebdca;max-width:600px;font-size:19px}
+    .network-lines{position:absolute;inset:0;opacity:.45}
+    .network-lines::before,.network-lines::after{content:"";position:absolute;left:55%;top:-20%;width:1px;height:140%;background:#38516a;transform:rotate(35deg)}
+    .network-lines::after{left:73%;transform:rotate(35deg)}
+    .network h2{max-width:850px}
+    .cta{background:#eef6f8}
+    .cta-inner{display:flex;justify-content:space-between;align-items:end;gap:40px}
+    .cta h2{max-width:760px}
+    .cta p{max-width:540px}
+    .contact-links{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px}
+    .contact-chip{border-bottom:1px solid #b7c4ce;padding-bottom:5px;font-size:16px}
+    footer{background:var(--navy);color:white;padding:34px 0}
+    .footer-inner{display:flex;justify-content:space-between;gap:30px;align-items:center}
+    .footer-links{display:flex;gap:25px;color:#9eafc1;font-size:13px}
+    .footer-note{font-size:12px;color:#75889b}
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:none}
+    @media(max-width:1000px){
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .advantages{grid-template-columns:repeat(2,1fr)}
+      .locations{grid-template-columns:repeat(3,1fr)}
+      .hero-grid{grid-template-columns:1fr}
+      .station-wrap{min-height:430px}
+      .grid-2{grid-template-columns:1fr;gap:55px}
+    }
+    @media(max-width:720px){
+      .container{width:min(var(--max),calc(100% - 32px))}
+      .section{padding:82px 0}
+      .nav-inner{height:70px}
+      .nav-links{display:none;position:absolute;top:70px;left:0;right:0;background:white;border-bottom:1px solid var(--line);padding:22px 16px;flex-direction:column;align-items:stretch;gap:0}
+      .nav-links.open{display:flex}
+      .nav-links a{padding:14px 0}
+      .nav-links .btn{margin-top:8px}
+      .menu{display:block}
+      .hero{padding-top:130px;min-height:auto}
+      h1{font-size:clamp(52px,16vw,82px)}
+      .hero-copy{font-size:17px}
+      .station{width:300px}
+      .station-wrap{min-height:380px}
+      .cards,.advantages,.process{grid-template-columns:1fr}
+      .card{min-height:210px}
+      .num{margin-bottom:48px}
+      .step:not(:last-child){border-right:0;padding-right:0;margin-right:0}
+      .step{padding-right:0}
+      .step h3{margin-top:28px}
+      .locations{grid-template-columns:1fr 1fr}
+      .location{min-height:125px}
+      .cta-inner{display:block}
+      .cta .btn{margin-top:25px}
+      .footer-inner{display:block}
+      .footer-links{margin:22px 0}
+      .rule-item{grid-template-columns:1fr;gap:8px}
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="#top" aria-label="TEMBOT home">TEMBOT</a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a class="btn btn-dark" href="#contact">Request a Demo <span>↗</span></a>
+      </nav>
+      <button class="menu" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="eyebrow">Autonomous coffee infrastructure</div>
+          <h1>COFFEE,<br>REIMAGINED.</h1>
+          <p class="hero-copy">Autonomous robotic coffee stations designed for modern spaces — combining robotics, coffee and automation in one seamless experience.</p>
+          <div class="hero-actions">
+            <a class="btn btn-dark" href="#contact">Request a Demo <span>↗</span></a>
+            <a class="btn btn-light" href="#services">Explore Services <span>↓</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container grid-2">
+        <div class="section-head reveal">
+          <div class="eyebrow">About TEMBOT</div>
+          <h2>Robotics meets everyday coffee.</h2>
+        </div>
+        <div class="about-copy reveal">
+          <p>TEMBOT develops and operates a network of autonomous robotic coffee stations. We bring together automated preparation, thoughtfully designed hardware and network operations to create a consistent coffee experience across modern locations.</p>
+          <div class="rule-list">
+            <div class="rule-item"><strong>01 / Concept</strong><p>Autonomous coffee stations built for spaces where convenience and design matter.</p></div>
+            <div class="rule-item"><strong>02 / Network</strong><p>A connected model designed to support multiple stations and locations.</p></div>
+            <div class="rule-item"><strong>03 / Operations</strong><p>Deployment, station management and technical support handled as one service.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft-section" id="services">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow">What we do</div>
+          <h2>From station to network.</h2>
+          <p>TEMBOT combines the technology, deployment and operational layer required to bring autonomous coffee into real-world spaces.</p>
+        </div>
+        <div class="cards reveal">
+          <article class="card"><div class="num">01</div><h3>Robotic Coffee Stations</h3><p>Autonomous stations designed around a simple, intuitive customer experience.</p></article>
+          <article class="card"><div class="num">02</div><h3>Installation & Deployment</h3><p>Planning and deployment support for bringing a station into a new location.</p></article>
+          <article class="card"><div class="num">03</div><h3>Network Operations</h3><p>Operational infrastructure for a growing network of autonomous stations.</p></article>
+          <article class="card"><div class="num">04</div><h3>Technical Support</h3><p>Ongoing technical support to keep station operations running smoothly.</p></article>
+          <article class="card"><div class="num">05</div><h3>Fleet Management</h3><p>Centralized management designed for stations distributed across multiple locations.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow">Why TEMBOT</div>
+          <h2>Designed for a different kind of coffee experience.</h2>
+        </div>
+        <div class="advantages reveal">
+          <article class="adv"><div class="num">01 / AUTONOMOUS</div><h3>Autonomous</h3><p>Robotic preparation reduces reliance on constant on-site manual operation.</p></article>
+          <article class="adv"><div class="num">02 / CONSISTENT</div><h3>Consistent</h3><p>A repeatable automated process designed to deliver a familiar experience.</p></article>
+          <article class="adv"><div class="num">03 / SCALABLE</div><h3>Scalable</h3><p>A network approach built to extend from one station to multiple locations.</p></article>
+          <article class="adv"><div class="num">04 / ALWAYS ON</div><h3>Always On</h3><p>Designed for spaces that need a convenient coffee experience throughout the day.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft-section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow">How it works</div>
+          <h2>Simple by design.</h2>
+        </div>
+        <div class="process reveal">
+          <article class="step"><div class="step-number">01</div><h3>Choose a drink</h3><p>Select your coffee from the station interface.</p></article>
+          <article class="step"><div class="step-number">02</div><h3>Automated preparation</h3><p>The robotic system prepares the selected drink automatically.</p></article>
+          <article class="step"><div class="step-number">03</div><h3>Pick up your coffee</h3><p>Your drink is ready to collect — simple, direct and convenient.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow">Built for modern spaces</div>
+          <h2>Where coffee meets footfall.</h2>
+          <p>TEMBOT stations can be considered for a range of environments where a compact, autonomous coffee experience fits the space.</p>
+        </div>
+        <div class="locations reveal">
+          <div class="location"><span>Offices</span></div>
+          <div class="location"><span>Hotels</span></div>
+          <div class="location"><span>Retail</span></div>
+          <div class="location"><span>Airports</span></div>
+          <div class="location"><span>Business Centers</span></div>
+          <div class="location"><span>Universities / Campuses</span></div>
+          <div class="location"><span>Events</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section network">
+      <div class="network-lines"></div>
+      <div class="container reveal">
+        <div class="eyebrow" style="color:#8ea3b7">The network</div>
+        <h2>ONE PLATFORM.<br>MULTIPLE LOCATIONS.<br>ONE CONSISTENT EXPERIENCE.</h2>
+        <p>TEMBOT is building a scalable network of autonomous robotic coffee stations — connecting physical locations with a common operational approach.</p>
+      </div>
+    </section>
+
+    <section class="section cta" id="contact">
+      <div class="container cta-inner reveal">
+        <div>
+          <div class="eyebrow">Start a conversation</div>
+          <h2>LET'S BUILD THE FUTURE OF COFFEE.</h2>
+          <p>Interested in bringing an autonomous coffee station to your space, discussing a partnership or learning more about the TEMBOT network? Get in touch.</p>
+          <div class="contact-links">
+            <a class="contact-chip" href="mailto:hello@tembot.com">hello@tembot.com</a>
+            <a class="contact-chip" href="tel:+XXXXXXXXXXX">+XX XXX XXX XXX</a>
+          </div>
+        </div>
+        <a class="btn btn-dark" href="mailto:hello@tembot.com?subject=TEMBOT%20Demo%20Request">Get in Touch <span>↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="logo">TEMBOT</div>
+        <div class="footer-note">© 2026 TEMBOT</div>
+      </div>
+      <div class="footer-links">
+        <a href="#contact">Contact</a>
+        <a href="#" onclick="return false;">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open);
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }));
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: .12});
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
