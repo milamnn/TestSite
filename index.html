@@ -174,10 +174,40 @@
     .step h3{font-size:27px;margin-top:45px}
     .step p{font-size:15px;max-width:280px}
     .locations{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .location{min-height:150px;border:1px solid var(--line);padding:24px;display:flex;align-items:flex-end;position:relative;overflow:hidden;background:#fff;transition:transform .25s ease,box-shadow .25s ease}
+    .location {
+      aspect-ratio: 16 / 9;
+      min-height: 150px;
+      border: 1px solid var(--line);
+      padding: 24px;
+      display: flex;
+      align-items: flex-end;
+      position: relative;
+      overflow: hidden;
+      background-color: #eef3f7;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
     .location:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
     .location span{font-size:16px;font-weight:650;position:relative;z-index:1}
     .location::after{content:"";position:absolute;width:80px;height:80px;border:1px solid #dce5ea;border-radius:50%;right:-20px;top:-20px}
+    .location::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.8));
+      pointer-events: none;
+      z-index: 0;
+    }
+    .loc-offices   { background-image: url('images/offices.png'); }
+    .loc-hotels    { background-image: url('images/hotels.png'); }
+    .loc-business  { background-image: url('images/business.png'); }
+    .loc-hospitals { background-image: url('images/hospitals.png'); }
+    .loc-malls     { background-image: url('images/malls.png'); }
+    .loc-markets   { background-image: url('images/markets.png'); }
+    .loc-airports  { background-image: url('images/airports.png'); }
+    .loc-metro     { background-image: url('images/metro.png'); }
     .network{background:var(--navy);color:white;overflow:hidden;position:relative}
     .network .container{position:relative;z-index:1}
     .network p{color:#aebdca;max-width:600px;font-size:19px}
@@ -336,16 +366,16 @@
           <h2>Where coffee meets footfall.</h2>
           <p>TEMBOT stations can be considered for a range of environments where a compact, autonomous coffee experience fits the space.</p>
         </div>
-        <div class="locations reveal">
-          <div class="location"><span>Offices</span></div>
-          <div class="location"><span>Hotels</span></div>
-          <div class="location"><span>Business Centers</span></div>
-          <div class="location"><span>Hospitals</span></div>
-          <div class="location"><span>Malls</span></div>
-          <div class="location"><span>Markets</span></div>
-          <div class="location"><span>Airports</span></div>
-          <div class="location"><span>Metro Stations</span></div>
-        </div>
+          <div class="locations reveal">
+            <div class="location loc-offices"><span>Offices</span></div>
+            <div class="location loc-hotels"><span>Hotels</span></div>
+            <div class="location loc-business"><span>Business Centers</span></div>
+            <div class="location loc-hospitals"><span>Hospitals</span></div>
+            <div class="location loc-malls"><span>Malls</span></div>
+            <div class="location loc-markets"><span>Markets</span></div>
+            <div class="location loc-airports"><span>Airports</span></div>
+            <div class="location loc-metro"><span>Metro Stations</span></div>
+          </div>
       </div>
     </section>
 
