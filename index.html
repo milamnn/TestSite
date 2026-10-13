@@ -190,13 +190,23 @@
       transition: transform .25s ease, box-shadow .25s ease;
     }
     .location:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-    .location span{font-size:16px;font-weight:650;position:relative;z-index:1}
+    .location span{
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 2px 2px;
+      font-size:16px;
+      font-weight:650;
+      background: rgba(255, 255, 255, .7);
+      position:relative;
+      z-index:1
+    }
     .location::after{content:"";position:absolute;width:80px;height:80px;border:1px solid #dce5ea;border-radius:50%;right:-20px;top:-20px}
     .location::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.7));
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.1));
       pointer-events: none;
       z-index: 0;
     }
